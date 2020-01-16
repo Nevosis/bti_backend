@@ -10,26 +10,33 @@ router.get("/", function(req, res) {
 });
 
 router.post("/", function(req, res) {
-	if (
-		req.body &&
-		req.body.reporterId &&
-		req.body.reporterMail &&
-		req.body.reportedName &&
-		req.body.reportedId
-	) {
+	const { reporterId, reporterMail, reportedName, reportedId } = req.body;
+	if (req.body && reporterId && reporterMail && reportedName && reportedId) {
 		let report = new Reports({
-			reporterId: req.body.reporterId,
-			reporterMail: req.body.reporterMail,
-			reportedName: req.body.reportedName,
-			reportedId: req.body.reportedId
+			reporterId,
+			reporterMail,
+			reportedName,
+			reportedId
 		});
-		report.save(function(err, rep) {
-			if (err) res.status(500).send("Broken");
-			else
-				res.json({
-					createdReport: report
-				});
-		});
+		
+		Reports.find(
+			{ reporterId, reporterMail, reportedName, reportedId },
+			function(err, reports) {
+				if (err) return console.error(err);
+				if (reports.length) {
+					// report already exist
+					res.status(400).send("Report already exist for this user");
+				} else {
+					report.save(function(err, rep) {
+						if (err) res.status(500).send("Broken");
+						else
+							res.json({
+								createdReport: report
+							});
+					});
+				}
+			}
+		);
 	} else {
 		res.status(400).send("reporter and reported mandatory");
 	}
