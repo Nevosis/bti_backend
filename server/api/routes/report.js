@@ -9,6 +9,23 @@ router.get("/", function(req, res) {
 	});
 });
 
+router.get("/:channelName", function(req, res) {
+	let channelName = req.params.channelName;
+	let channelId = req.body.channelId;
+	
+	if (req.body && channelName && channelId) {
+		Reports.find(
+			{ reportedName: channelName, reportedId: channelId },
+			function(err, reports) {
+				if (err) return console.error(err);
+				res.send(reports);
+			}
+		);
+	} else {
+		res.status(400).send("channelName and channelId mandatory");
+	}
+});
+
 router.post("/", function(req, res) {
 	const { reporterId, reporterMail, reportedName, reportedId } = req.body;
 	if (req.body && reporterId && reporterMail && reportedName && reportedId) {
@@ -18,7 +35,7 @@ router.post("/", function(req, res) {
 			reportedName,
 			reportedId
 		});
-		
+
 		Reports.find(
 			{ reporterId, reporterMail, reportedName, reportedId },
 			function(err, reports) {
