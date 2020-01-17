@@ -9,10 +9,10 @@ router.get("/", function(req, res) {
 	});
 });
 
-router.get("/:channelName", function(req, res) {
+router.post("/:channelName", function(req, res) {
 	let channelName = req.params.channelName;
 	let channelId = req.body.channelId;
-	
+
 	if (req.body && channelName && channelId) {
 		Reports.find(
 			{ reportedName: channelName, reportedId: channelId },
