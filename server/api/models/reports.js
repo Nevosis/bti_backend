@@ -6,6 +6,7 @@ var reportSchema = new mongoose.Schema(
 		reporterMail: { type: String, require: true },
 		reportedName: { type: String, require: true },
 		reportedId: { type: String, require: true },
+		comment: { type: String },
 		date: { type: Date, default: Date.now }
 	},
 	{

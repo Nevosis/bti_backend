@@ -27,13 +27,14 @@ router.post("/:channelName", function(req, res) {
 });
 
 router.post("/", function(req, res) {
-	const { reporterId, reporterMail, reportedName, reportedId } = req.body;
-	if (req.body && reporterId && reporterMail && reportedName && reportedId) {
+	const { reporterId, reporterMail, reportedName, reportedId, comment } = req.body;
+	if (req.body && reporterId && reporterMail && reportedName && reportedId && comment) {
 		let report = new Reports({
 			reporterId,
 			reporterMail,
 			reportedName,
-			reportedId
+			reportedId,
+			comment
 		});
 
 		Reports.find(
